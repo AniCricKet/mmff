@@ -14,17 +14,28 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('container').appendChild(renderer.domElement);
 
-    // Add lights
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 1, 1).normalize();
-    scene.add(light);
+    // Add multiple lights
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5); // Stronger ambient light
+    scene.add(ambientLight);
+
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight1.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight1);
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight2.position.set(-1, -1, -1).normalize();
+    scene.add(directionalLight2);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1, 500);
+    pointLight.position.set(0, 200, 200);
+    scene.add(pointLight);
 
     // Add OrbitControls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
-    controls.maxPolarAngle = Math.PI / 2;
+    controls.maxPolarAngle = Math.PI; // Allow full vertical rotation
 
     // Draw initial box
     drawBox();
@@ -46,7 +57,7 @@ function drawBox() {
 
     // Create a box geometry
     const geometry = new THREE.BoxGeometry(width, height, length);
-    const material = new THREE.MeshPhongMaterial({ color: 0x00ff00, wireframe: false });
+    const material = new THREE.MeshPhongMaterial({ color: 0x00ff00, flatShading: true });
     box = new THREE.Mesh(geometry, material);
     scene.add(box);
 
