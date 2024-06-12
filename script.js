@@ -1,4 +1,4 @@
-let scene, camera, renderer, box;
+let scene, camera, renderer, box, controls;
 
 function init() {
     // Create the scene
@@ -7,7 +7,7 @@ function init() {
 
     // Create a camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 200;
+    camera.position.set(200, 200, 200);
 
     // Create a renderer
     renderer = new THREE.WebGLRenderer();
@@ -19,8 +19,18 @@ function init() {
     light.position.set(1, 1, 1).normalize();
     scene.add(light);
 
+    // Add OrbitControls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI / 2;
+
     // Draw initial box
     drawBox();
+
+    // Animation loop
+    animate();
 }
 
 function drawBox() {
@@ -39,6 +49,16 @@ function drawBox() {
     const material = new THREE.MeshPhongMaterial({ color: 0x00ff00, wireframe: false });
     box = new THREE.Mesh(geometry, material);
     scene.add(box);
+
+    // Render the scene
+    renderer.render(scene, camera);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Update controls
+    controls.update();
 
     // Render the scene
     renderer.render(scene, camera);
