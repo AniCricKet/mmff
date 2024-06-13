@@ -1,4 +1,5 @@
 let scene, camera, renderer, box, controls;
+let currentColor = '#00ff00'; // Default color
 
 function init() {
     // Create the scene
@@ -57,12 +58,19 @@ function drawBox() {
 
     // Create a box geometry
     const geometry = new THREE.BoxGeometry(width, height, length);
-    const material = new THREE.MeshPhongMaterial({ color: 0x00ff00, flatShading: true });
+    const material = new THREE.MeshPhongMaterial({ color: currentColor, flatShading: true });
     box = new THREE.Mesh(geometry, material);
     scene.add(box);
 
     // Render the scene
     renderer.render(scene, camera);
+}
+
+function setColor(color) {
+    currentColor = color;
+    if (box) {
+        box.material.color.set(color);
+    }
 }
 
 function animate() {
