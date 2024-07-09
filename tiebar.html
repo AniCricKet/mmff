@@ -67,6 +67,8 @@
                 { x: rectX + distance, y: rectY + distance },
             ];
 
+            ctx.fillStyle = '#ff0000'; 
+
             bars.forEach(bar => {
                 ctx.beginPath();
                 ctx.arc(bar.x, bar.y, radius, 0, Math.PI * 2);
@@ -85,9 +87,10 @@
             // Draw the box
             ctx.beginPath();
             ctx.rect(box.x, box.y, box.width, box.height);
-            ctx.strokeStyle = '#ff0000';
+            ctx.strokeStyle = '#524b4b';
+            ctx.fillStyle = '#524b4b'; // Fill color
+            ctx.fillRect(box.x, box.y, box.width, box.height);
             ctx.stroke();
-            ctx.strokeStyle = '#000000'; // Reset stroke style
         }
 
         function isInsideBox(x, y) {
