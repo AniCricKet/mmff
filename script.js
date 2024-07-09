@@ -1,6 +1,6 @@
 // Declaring global variables
 let scene, camera, renderer, box, controls;
-let currentColor = '#000000'; // Default color for the box
+let currentColor = '#524b4b'; // Default color for the box
 
 function init() {
     // Create a new Three.js scene
