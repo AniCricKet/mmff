@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tie Bar Simulator</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            margin-top: 20px;
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tie Bar Simulator</h1>
+    <div class="controls">
+        <label for="distance">Distance between bars:</label>
+        <input type="number" id="distance" value="200">
+        <label for="boxWidth">Box Width:</label>
+        <input type="number" id="boxWidth" value="100">
+        <label for="boxHeight">Box Height:</label>
+        <input type="number" id="boxHeight" value="100">
+        <button onclick="drawSimulator()">Draw Simulator</button>
+    </div>
+    <canvas id="tieBarCanvas"></canvas>
+    <script>
+        // Get canvas and context
+        const canvas = document.getElementById('tieBarCanvas');
+        const ctx = canvas.getContext('2d');
+        let box = { x: 0, y: 0, width: 0, height: 0 };
+        let bars = [];
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        function drawSimulator() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Get values from input fields
+            const distance = parseInt(document.getElementById('distance').value);
+            const boxWidth = parseInt(document.getElementById('boxWidth').value);
+            const boxHeight = parseInt(document.getElementById('boxHeight').value);
+
+            // Draw tie bars (circles)
+            const radius = 10;
+            const rectX = (canvas.width - distance) / 2;
+            const rectY = (canvas.height - distance) / 2;
+
+            bars = [
+                { x: rectX, y: rectY },
+                { x: rectX + distance, y: rectY },
+                { x: rectX, y: rectY + distance },
+                { x: rectX + distance, y: rectY + distance },
+            ];
+
+            bars.forEach(bar => {
+                ctx.beginPath();
+                ctx.arc(bar.x, bar.y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Initialize the box outside the tie bars if first draw
+            if (box.width === 0 && box.height === 0) {
+                box = { x: 50, y: (canvas.height - boxHeight) / 2, width: boxWidth, height: boxHeight };
+            } else {
+                // Update box dimensions
+                box.width = boxWidth;
+                box.height = boxHeight;
+            }
+
+            // Draw the box
+            ctx.beginPath();
+            ctx.rect(box.x, box.y, box.width, box.height);
+            ctx.strokeStyle = '#ff0000';
+            ctx.stroke();
+            ctx.strokeStyle = '#000000'; // Reset stroke style
+        }
+
+        function isInsideBox(x, y) {
+            return x > box.x && x < box.x + box.width && y > box.y && y < box.y + box.height;
+        }
+
+        function constrainBox() {
+            const leftBar = bars[0];
+            const rightBar = bars[1];
+            const topBar = bars[0];
+            const bottomBar = bars[2];
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            if (isInsideBox(mouseX, mouseY)) {
+                isDragging = true;
+                offsetX = mouseX - box.x;
+                offsetY = mouseY - box.y;
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const newX = e.offsetX - offsetX;
+                const newY = e.offsetY - offsetY;
+
+                // Update box position
+                box.x = newX;
+                box.y = newY;
+
+                // Constrain box within tie bars
+                constrainBox();
+                
+                drawSimulator();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            isDragging = false;
+        });
+
+        // Set canvas size to match the window size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawSimulator();
+        }
+
+        // Initial draw and setup
+        window.onload = () => {
+            resizeCanvas();
+            drawSimulator();
+        };
+
+        window.onresize = resizeCanvas;
+    </script>
+</body>
+</html>
