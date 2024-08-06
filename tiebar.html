@@ -28,8 +28,10 @@
 <body>
     <h1>Tie Bar Simulator</h1>
     <div class="controls">
-        <label for="distance">Distance between bars:</label>
-        <input type="number" id="distance" value="200">
+        <label for="horizontalDistance">Horizontal distance between bars:</label>
+        <input type="number" id="horizontalDistance" value="200">
+        <label for="verticalDistance">Vertical distance between bars:</label>
+        <input type="number" id="verticalDistance" value="200">
         <label for="boxWidth">Box Width:</label>
         <input type="number" id="boxWidth" value="100">
         <label for="boxHeight">Box Height:</label>
@@ -51,23 +53,27 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Get values from input fields
-            const distance = parseInt(document.getElementById('distance').value);
+            const horizontalDistance = parseInt(document.getElementById('horizontalDistance').value);
+            const verticalDistance = parseInt(document.getElementById('verticalDistance').value);
             const boxWidth = parseInt(document.getElementById('boxWidth').value);
             const boxHeight = parseInt(document.getElementById('boxHeight').value);
 
             // Draw tie bars (circles)
             const radius = 10;
-            const rectX = (canvas.width - distance) / 2;
-            const rectY = (canvas.height - distance) / 2;
+            const padding = 35;
+            const actualHorizontalDistance = horizontalDistance + 2 * radius + 2 * padding; // Total distance from edge to edge horizontally
+            const actualVerticalDistance = verticalDistance + 2 * radius + 2 * padding; // Total distance from edge to edge vertically
+            const rectX = (canvas.width - actualHorizontalDistance) / 2;
+            const rectY = (canvas.height - actualVerticalDistance) / 2;
 
             bars = [
-                { x: rectX, y: rectY },
-                { x: rectX + distance, y: rectY },
-                { x: rectX, y: rectY + distance },
-                { x: rectX + distance, y: rectY + distance },
+                { x: rectX + radius + padding, y: rectY + radius + padding },
+                { x: rectX + horizontalDistance + 3 * radius + padding, y: rectY + radius + padding },
+                { x: rectX + radius + padding, y: rectY + verticalDistance + 3 * radius + padding },
+                { x: rectX + horizontalDistance + 3 * radius + padding, y: rectY + verticalDistance + 3 * radius + padding },
             ];
 
-            ctx.fillStyle = '#ff0000'; 
+            ctx.fillStyle = '#ff0000';
 
             bars.forEach(bar => {
                 ctx.beginPath();
@@ -102,6 +108,7 @@
             const rightBar = bars[1];
             const topBar = bars[0];
             const bottomBar = bars[2];
+            // Implement the constraint logic
         }
 
         canvas.addEventListener('mousedown', (e) => {
