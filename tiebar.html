@@ -95,10 +95,12 @@
         function checkCollision(newX, newY) {
             const boxRight = newX + box.width;
             const boxBottom = newY + box.height;
+            const boxLeft = newX;
+            const boxTop = newY;
 
             for (const bar of bars) {
-                const distX = Math.abs(bar.x - (newX + box.width / 2));
-                const distY = Math.abs(bar.y - (newY + box.height / 2));
+                const distX = Math.abs(bar.x - (boxLeft + box.width / 2));
+                const distY = Math.abs(bar.y - (boxTop + box.height / 2));
 
                 const collideHorizontally = distX < (box.width / 2 + 10);
                 const collideVertically = distY < (box.height / 2 + 10);
@@ -125,9 +127,11 @@
                 const newX = e.offsetX - offsetX;
                 const newY = e.offsetY - offsetY;
 
-                if (!checkCollision(newX, newY)) {
-                    box.x = newX;
+                if (!checkCollision(box.x, newY)) {
                     box.y = newY;
+                }
+                if (!checkCollision(newX, box.y)) {
+                    box.x = newX;
                 }
 
                 drawSimulator();
