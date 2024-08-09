@@ -15,8 +15,7 @@
         }
         canvas {
             margin-top: 20px;
-            width: 100%;
-            height: 100%;
+            border: 1px solid black;
         }
         .controls {
             display: flex;
@@ -38,9 +37,8 @@
         <input type="number" id="boxHeight" value="100">
         <button onclick="drawSimulator()">Draw Simulator</button>
     </div>
-    <canvas id="tieBarCanvas"></canvas>
+    <canvas id="tieBarCanvas" width="600" height="400"></canvas>
     <script>
-        // Get canvas and context
         const canvas = document.getElementById('tieBarCanvas');
         const ctx = canvas.getContext('2d');
         let box = { x: 0, y: 0, width: 0, height: 0 };
@@ -49,20 +47,17 @@
         let offsetX, offsetY;
 
         function drawSimulator() {
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Get values from input fields
             const horizontalDistance = parseInt(document.getElementById('horizontalDistance').value);
             const verticalDistance = parseInt(document.getElementById('verticalDistance').value);
             const boxWidth = parseInt(document.getElementById('boxWidth').value);
             const boxHeight = parseInt(document.getElementById('boxHeight').value);
 
-            // Draw tie bars (circles)
             const radius = 10;
             const padding = 35;
-            const actualHorizontalDistance = horizontalDistance + 2 * radius + 2 * padding; // Total distance from edge to edge horizontally
-            const actualVerticalDistance = verticalDistance + 2 * radius + 2 * padding; // Total distance from edge to edge vertically
+            const actualHorizontalDistance = horizontalDistance + 2 * radius + 2 * padding;
+            const actualVerticalDistance = verticalDistance + 2 * radius + 2 * padding;
             const rectX = (canvas.width - actualHorizontalDistance) / 2;
             const rectY = (canvas.height - actualVerticalDistance) / 2;
 
@@ -74,41 +69,45 @@
             ];
 
             ctx.fillStyle = '#ff0000';
-
             bars.forEach(bar => {
                 ctx.beginPath();
                 ctx.arc(bar.x, bar.y, radius, 0, Math.PI * 2);
                 ctx.fill();
             });
 
-            // Initialize the box outside the tie bars if first draw
             if (box.width === 0 && box.height === 0) {
                 box = { x: 50, y: (canvas.height - boxHeight) / 2, width: boxWidth, height: boxHeight };
             } else {
-                // Update box dimensions
                 box.width = boxWidth;
                 box.height = boxHeight;
             }
 
-            // Draw the box
-            ctx.beginPath();
-            ctx.rect(box.x, box.y, box.width, box.height);
-            ctx.strokeStyle = '#524b4b';
-            ctx.fillStyle = '#524b4b'; // Fill color
+            ctx.fillStyle = '#524b4b';
             ctx.fillRect(box.x, box.y, box.width, box.height);
-            ctx.stroke();
+            ctx.strokeStyle = '#000000';
+            ctx.strokeRect(box.x, box.y, box.width, box.height);
         }
 
         function isInsideBox(x, y) {
             return x > box.x && x < box.x + box.width && y > box.y && y < box.y + box.height;
         }
 
-        function constrainBox() {
-            const leftBar = bars[0];
-            const rightBar = bars[1];
-            const topBar = bars[0];
-            const bottomBar = bars[2];
-            // Implement the constraint logic
+        function checkCollision(newX, newY) {
+            const boxRight = newX + box.width;
+            const boxBottom = newY + box.height;
+
+            for (const bar of bars) {
+                const distX = Math.abs(bar.x - (newX + box.width / 2));
+                const distY = Math.abs(bar.y - (newY + box.height / 2));
+
+                const collideHorizontally = distX < (box.width / 2 + 10);
+                const collideVertically = distY < (box.height / 2 + 10);
+
+                if (collideHorizontally && collideVertically) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         canvas.addEventListener('mousedown', (e) => {
@@ -126,13 +125,11 @@
                 const newX = e.offsetX - offsetX;
                 const newY = e.offsetY - offsetY;
 
-                // Update box position
-                box.x = newX;
-                box.y = newY;
+                if (!checkCollision(newX, newY)) {
+                    box.x = newX;
+                    box.y = newY;
+                }
 
-                // Constrain box within tie bars
-                constrainBox();
-                
                 drawSimulator();
             }
         });
@@ -145,14 +142,12 @@
             isDragging = false;
         });
 
-        // Set canvas size to match the window size
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             drawSimulator();
         }
 
-        // Initial draw and setup
         window.onload = () => {
             resizeCanvas();
             drawSimulator();
