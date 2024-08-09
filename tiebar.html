@@ -65,7 +65,7 @@
 </head>
 <body>
     <div class="navbar">
-        <h2>Navigation</h2>
+        <a href="https://github.com/AniCricKet/mmff" style="font-size: 20px;">Machine Mould Fit Function</a>
         <div>
             <a href="https://anicricket.github.io/mmff/">3D Cube</a>
             <a href="https://anicricket.github.io/mmff/tiebar">Tie Bar</a>
@@ -75,13 +75,13 @@
         <h1>Tie Bar Simulator</h1>
         <div class="controls">
             <label for="horizontalDistance">Horizontal distance between bars:</label>
-            <input type="number" id="horizontalDistance" value="200">
+            <input type="number" id="horizontalDistance" value="100" min="10" max="2000000">
             <label for="verticalDistance">Vertical distance between bars:</label>
-            <input type="number" id="verticalDistance" value="200">
+            <input type="number" id="verticalDistance" value="100" min="10" max="2000000">
             <label for="boxWidth">Box Width:</label>
-            <input type="number" id="boxWidth" value="100">
+            <input type="number" id="boxWidth" value="50" min="10" max="1000000">
             <label for="boxHeight">Box Height:</label>
-            <input type="number" id="boxHeight" value="100">
+            <input type="number" id="boxHeight" value="50" min="10" max="1000000">
             <button onclick="drawSimulator()">Draw Simulator</button>
         </div>
         <canvas id="tieBarCanvas" width="600" height="400"></canvas>
