@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,51 +8,82 @@
         body {
             display: flex;
             flex-direction: column;
-            align-items: center;
             margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .content {
             padding: 20px;
-            font-family: Arial, sans-serif;
+            flex-grow: 1;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         canvas {
-            display: block;
-        }
-        .color-picker {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .color-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid #000;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <h1>3D Box Generator</h1>
-    <div>
-        <label for="height">Height:</label>
-        <input type="number" id="height" value="100">
-        <label for="width">Width:</label>
-        <input type="number" id="width" value="100">
-        <label for="length">Length:</label>
-        <input type="number" id="length" value="100">
-        <button onclick="drawBox()">Draw Box</button>
+    <div class="navbar">
+        <h2>Navigation</h2>
+        <div>
+            <a href="https://anicricket.github.io/mmff/">3D Cube</a>
+            <a href="https://anicricket.github.io/mmff/tiebar">Tie Bar</a>
+        </div>
     </div>
-    <!-- <div class="color-picker">
-        <div class="color-circle" style="background-color: #ff0000;" onclick="setColor('#ff0000')"></div>
-        <div class="color-circle" style="background-color: #ff8800;" onclick="setColor('#ff8800')"></div>
-        <div class="color-circle" style="background-color: #ffff00;" onclick="setColor('#ffff00')"></div>
-        <div class="color-circle" style="background-color: #00ff00;" onclick="setColor('#00ff00')"></div>
-        <div class="color-circle" style="background-color: #00ffff;" onclick="setColor('#00ffff')"></div>
-        <div class="color-circle" style="background-color: #0000ff;" onclick="setColor('#0000ff')"></div>
-        <div class="color-circle" style="background-color: #ff00ff;" onclick="setColor('#ff00ff')"></div>
-        <div class="color-circle" style="background-color: #000000;" onclick="setColor('#000000')"></div>
-        <div class="color-circle" style="background-color: #524b4b;" onclick="setColor('#524b4b')"></div>
-    </div> -->
-    <div id="container"></div>
+    <div class="content">
+        <h1>3D Box Generator</h1>
+        <div>
+            <label for="height">Height:</label>
+            <input type="number" id="height" value="100">
+            <label for="width">Width:</label>
+            <input type="number" id="width" value="100">
+            <label for="length">Length:</label>
+            <input type="number" id="length" value="100">
+            <button onclick="drawBox()">Draw Box</button>
+        </div>
+        <div id="container"></div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="script.js"></script>

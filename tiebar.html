@@ -8,36 +8,84 @@
         body {
             display: flex;
             flex-direction: column;
-            align-items: center;
             margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .content {
             padding: 20px;
-            font-family: Arial, sans-serif;
+            flex-grow: 1;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         canvas {
             margin-top: 20px;
-            border: 1px solid black;
-        }
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <h1>Tie Bar Simulator</h1>
-    <div class="controls">
-        <label for="horizontalDistance">Horizontal distance between bars:</label>
-        <input type="number" id="horizontalDistance" value="200">
-        <label for="verticalDistance">Vertical distance between bars:</label>
-        <input type="number" id="verticalDistance" value="200">
-        <label for="boxWidth">Box Width:</label>
-        <input type="number" id="boxWidth" value="100">
-        <label for="boxHeight">Box Height:</label>
-        <input type="number" id="boxHeight" value="100">
-        <button onclick="drawSimulator()">Draw Simulator</button>
+    <div class="navbar">
+        <h2>Navigation</h2>
+        <div>
+            <a href="https://anicricket.github.io/mmff/">3D Cube</a>
+            <a href="https://anicricket.github.io/mmff/tiebar">Tie Bar</a>
+        </div>
     </div>
-    <canvas id="tieBarCanvas" width="600" height="400"></canvas>
+    <div class="content">
+        <h1>Tie Bar Simulator</h1>
+        <div class="controls">
+            <label for="horizontalDistance">Horizontal distance between bars:</label>
+            <input type="number" id="horizontalDistance" value="200">
+            <label for="verticalDistance">Vertical distance between bars:</label>
+            <input type="number" id="verticalDistance" value="200">
+            <label for="boxWidth">Box Width:</label>
+            <input type="number" id="boxWidth" value="100">
+            <label for="boxHeight">Box Height:</label>
+            <input type="number" id="boxHeight" value="100">
+            <button onclick="drawSimulator()">Draw Simulator</button>
+        </div>
+        <canvas id="tieBarCanvas" width="600" height="400"></canvas>
+    </div>
     <script>
         const canvas = document.getElementById('tieBarCanvas');
         const ctx = canvas.getContext('2d');
